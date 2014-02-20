@@ -1,4 +1,5 @@
 package backgammon;
+import java.util.Scanner;
 
 public class Board
 {
@@ -23,7 +24,7 @@ public class Board
 	static final String UPPPER_LINE_OF_BOARD = "13----+----+----+----+----18  BAR  19----+----+----+----+----24 OFF\n";
 	static final String BOTTOM_LINE_OF_BOARD = "12----+----+----+----+----07  BAR  06----+----+----+----+----01 OFF\n";
 	// end constants
-	
+	static int playerDeterminator;
 	int playingBoard[] = new int[NUMBER_OF_PEGS + BAR + OFF];
 	
 	public String showBlackBar()
@@ -159,22 +160,23 @@ public class Board
      * @param die1 the first die values
      * @param die2 second die values
      */
-	public void makeMove(int die1, int die2)
+	public boolean makeMove(int die1, int die2)
 	{
         
-		playerDeterminator++;
+		boolean returnValue;
+        playerDeterminator++;
 		
 		System.out.println(playerDeterminator%2 + "\n");
 		
 		if (playerDeterminator%2 == 1)
-			whiteMove(die1,die2);
+			returnValue = whiteMove(die1,die2);
 		else
-			blackMove(die2,die2);
-		
+			returnValue = blackMove(die2,die2);
+		return returnValue;
 	}
     
 	
-	public void blackMove(int die1, int die2)
+	public boolean blackMove(int die1, int die2)
 	{
 		Scanner bUserMove = new Scanner(System.in);
 		int position;
@@ -188,7 +190,6 @@ public class Board
 		while (!flag) {
 			if (position > -1 && position < 26) {
 				//checks if a black man exists in that position
-				//if (playingBoard[posi])
 				// This checks if the user chose a black man to move
 				if (playingBoard[position] < 0) {
 					playingBoard[position] += 1;
@@ -224,7 +225,9 @@ public class Board
                     
 					// this final else statement is triggererd if the black man is
 					// moved but there is no black that exists in that position and theres a stack of white men
-					else {
+					else if ( position < 0 )
+                        return false;               // exit condition
+                    else {
 						System.out.println("Invalid move You are attempting to kill more then 1 man!");
 						System.out.print("Enter number to Move\n");
 						position = bUserMove.nextInt() - 1;
@@ -233,17 +236,12 @@ public class Board
 					}
 				}
 			}
-			else{
-				flag = false;
-				System.out.println("Within Else Statement");
-				
-			}
-            
-		}
+        }
+        return flag;            // loop only exits when flag == true
         
 	}
     
-	public void whiteMove(int die1, int die2) {
+	public boolean whiteMove(int die1, int die2) {
 		Scanner wUserMove = new Scanner(System.in);
 		int position;
 		int move = die1 + die2;
@@ -289,8 +287,9 @@ public class Board
                     
 					// this final else statement is triggered if the white is
 					// moved but there is no white that exists in that position
-					else {
-						// playingBoard[position+move] +=0;
+					else if (position < 0)
+                        return false;               // exit condition
+                    else {
 						System.out.println("Invalid move You are attempting to kill more then 1 black man!");
 						System.out.print("\nEnter number to Move\n");
 						position = wUserMove.nextInt() - 1;
@@ -301,21 +300,136 @@ public class Board
 			}
             
 		}
-        
+        return flag; // see above
 	}
 	
+    public static String printMenu() {
+        String tab6 = "\t\t\t\t\t\t";
+        
+        System.out.println( tab6 +" 1. 'N' to statrt a new game ");
+        System.out.println( tab6 +" 2. 'R' to read the rules ");
+        System.out.println( tab6 +" 3. 'Q' to quit ");
+        
+        
+        
+        Scanner keyboard = new Scanner(System.in);
+        String userChoice1 = keyboard.nextLine();
+        return userChoice1;
+        
+    }
+    
+    
+    
+    public static void welcome(){
+        String newLine3 = "\n\n\n" ;
+        String tab ="\t\t\t\t\t\t";
+        
+        System.out.println(newLine3 + tab +"*******************************");
+        System.out.println(tab +"*******************************");
+        System.out.println(tab + "**** Welcome To The G's *******");
+        System.out.println(tab + "****	 Backgammon     *******");
+        System.out.println(tab + "*******************************");
+        System.out.println(tab + "*******************************" + newLine3 );
+    }
+    public static void Rules() {
+        
+        
+        System.out.println("Each player rolls a single die. If you rolled the highest");
+        System.out.println("number, move your Checkers according to the numbers showing on");
+        System.out.println("both dice. After the initial roll, players alternate turns, using ");
+        System.out.println("both dice to determine the number of points to move the Checkers.");
+        System.out.println("Always move the Checkers in the direction of your home board. ");
+        System.out.println("* A Checker can move to an open point, which is a point that");
+        System.out.println("is occupied by any number of your own Checkers, or a point that");
+        System.out.println("is not occupied by two or more of your opponent’s Checkers.");
+        System.out.println("* You can move one Checker the count of one die and another Checker");
+        System.out.println("the count of the other die. Or, you can move one Checker the total ");
+        System.out.println("number showing on both dice, only if the count of one of the dice ");
+        System.out.println("could move your piece to an available point. For example, if you roll 4 and 5, you may");
+        System.out.println("move one Checker 4 spaces and another Checker 5 spaces. Alternatively,");
+        System.out.println("you may move on Checker the total of 4 and 5, or 9 spaces, only if");
+        System.out.println("either the fourth or fifth points are open.");
+        System.out.println("* If you roll Doubles, play the number shown on the dice twice.");
+        System.out.println("For example, if you roll two 5s, use any combination of Checkers to");
+        System.out.println("move a total of four 5s.");
+        System.out.println("* When it’s not possible to move the full count of both dice");
+        System.out.println("and only one Checker can be played, you must move that Checker. ");
+        System.out.println("If either number can be played but not both, play the larger one.");
+        System.out.println("If neither number can be played, you lose your turn.");
+        
+        System.out.println(" ");
+        System.out.println(" ");
+        System.out.println(" ");
+        System.out.println(" ");
+        
+        
+        
+        
+        
+        
+        
+        System.out.println("Press R to reuturn to Main Menu");
+        
+        Scanner keyboard = new Scanner(System.in);
+        String userChoice2 = keyboard.nextLine();
+        
+        if(userChoice2.equalsIgnoreCase("R"))
+        {
+            printMenu();
+        }
+        else 
+        {
+            Rules();
+            
+            System.out.println("Invalid Input");
+            
+        }
+        
+    }
+    public static boolean newGame() {
+        
+        return true;
+        
+        
+    }
+    public static void quit() {
+        System.exit(0);
+    }
+    
+
+    
 	public static void main( String[] args )
 	{
 		
-		Board b  = new Board();
-		b.initialiseBoard();
-		b.printBoard();
-		
-		while (1==1)
-		{
-			
-            b.makeMove(b.rollDice(), b.rollDice());
+        Board b  = new Board();
+		b.welcome();
+        String userInput = b.printMenu();
+        while(!(userInput.equalsIgnoreCase("Q")))
+        {
+        if(userInput.equalsIgnoreCase("N"))
+        {
+            b.initialiseBoard();
             b.printBoard();
-		}
+// as long as the exit condition isn't invoked, the loop condition will always be true
+            while (b.makeMove(b.rollDice(), b.rollDice()))
+                b.printBoard();
+    
+        }
+
+		else if(userInput.equalsIgnoreCase("R"))
+        {
+            Rules();
+            
+        }
+        else
+        {
+            System.out.println("Invalid Option");
+            
+        }
+        
+        }
+        System.out.println(" Thank you ! see you soon  ");
+        quit();
+		
 	}
 }
