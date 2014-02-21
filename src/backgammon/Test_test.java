@@ -1,0 +1,18 @@
+package backgammon;
+
+import java.util.Scanner;
+
+public class Test_test
+{
+	public static void main( String[] args )
+	{
+		Scanner bUserMove = new Scanner ( System.in );
+		String userInput = bUserMove.nextLine ();					// raw input from the user
+		String[] separateUserMoves = userInput.split ( " " );		// stores all the pairs
+		String[] pair = separateUserMoves[0].split ( "-" );			// stores a position-move pair
+		int position = Integer.parseInt ( pair[0] );
+		int move = Integer.parseInt ( pair[1] );
+		System.out.println ( "you move from position " + position
+				+ " the following amount " + move );
+	}
+}

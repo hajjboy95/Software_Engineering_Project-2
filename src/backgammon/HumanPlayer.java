@@ -37,12 +37,17 @@ public class HumanPlayer
 	{
 		Scanner bUserMove = new Scanner ( System.in );
 		int position;
-		int move = die1 + die2;
+		int move;
 		boolean flag = false;
 		System.out.println ( "Black Turn" );
-		System.out.println ( "You rolled a " + move );
+		System.out.println ( "You rolled a " + die1 + " and a " + die2 );
 		System.out.print ( "Enter number to Move\n" );
-		position = bUserMove.nextInt () - 1;
+		
+		String userInput = bUserMove.nextLine ();					// raw input from the user
+		String[] separateUserMoves = userInput.split ( " " );		// stores all the pairs
+		String[] pair = separateUserMoves[0].split ( "-" );			// stores a position-move pair
+		position = Integer.parseInt ( pair[0] );
+		move = Integer.parseInt ( pair[1] );
 		
 		while ( !flag )
 		{
