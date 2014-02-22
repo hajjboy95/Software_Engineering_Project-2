@@ -7,7 +7,8 @@ public class Test_test
 	public static void main( String[] args )
 	{
 		Scanner bUserMove = new Scanner ( System.in );
-		String userInput = bUserMove.nextLine ();					// raw input from the user
+		bUserMove.useDelimiter ( "\n" );
+		String userInput = bUserMove.next ();					// raw input from the user
 		String[] separateUserMoves = userInput.split ( " " );		// stores all the pairs
 		for ( int counter = 0; counter < separateUserMoves.length; counter++ )
 		{

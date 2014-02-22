@@ -34,13 +34,10 @@ public class HumanPlayer
 		if ( playerDeterminator % 2 == 1 )
 			System.out.println ( "Black Turn" );
 		else System.out.println ( "White Turn" );
-		return Move ( die2, die2 );
-	}
-	
-	public boolean Move( int die1, int die2 )
-	{
+		
 		int movingColour = getPlayer ();
 		Scanner bUserMove = new Scanner ( System.in );
+		bUserMove.useDelimiter ( "\n" );
 		int position;
 		int move;
 		boolean flag = false;
@@ -51,44 +48,42 @@ public class HumanPlayer
 		
 		while ( !flag )
 		{
-			String userInput = bUserMove.nextLine ();					// raw input from the user
+			String userInput = bUserMove.next ();					// raw input from the user
 			String[] separateUserMoves = userInput.split ( " " );		// stores all the pairs
-			
 			for ( int counter = 0; counter < separateUserMoves.length; counter++ )
 			{
-				String[] pair = separateUserMoves[counter].split ( "-" );// stores a position-move pair
-				position = Integer.parseInt ( pair[0] );
-				move = movingColour * Integer.parseInt ( pair[1] );
-				
+				String[] pair = separateUserMoves[counter].split ( "-" );			// stores a position-move pair
+				position = Integer.parseInt ( pair[0] ) - 1;
+				move = Integer.parseInt ( pair[1] );
+				int destination = position + ( move * movingColour );
 				if ( position > -1 && position < 26 )
 				{
 					//checks if a black man exists in that position
 					// This checks if the user chose a black man to move
-					if ( Board.playingBoard[position] >= movingColour )
+					if ( ( Board.playingBoard[position] * movingColour ) > 0 )
 					{
-						if ( ( position + move ) < 0 )
+						if ( ( destination < 0 ) || ( destination > 23 ) )
 						{
 							System.out
 									.println ( " Array out of bounds retry move " );
 							flag = false;
-							
 						}
 						
-						//If the peg has no men
-						if ( Board.playingBoard[position + move] == 0 )
+						//If the peg has no opponent men
+						if ( ( Board.playingBoard[destination] * movingColour ) > -1 )
 						{
 							Board.playingBoard[position] -= movingColour;
-							Board.playingBoard[position - move] += movingColour;// adds a new black man to the board
+							Board.playingBoard[destination] += movingColour;// adds a new man to the board
 							System.out.println ( " Valid move" );
 							flag = true;
 						}
 						
 						// if 1 man in the position
-						else if ( Board.playingBoard[position + move] == ( -1 * movingColour ) )
+						else if ( Board.playingBoard[destination] == ( -1 * movingColour ) )
 						{
 							
 							System.out.println ( "You killed him" );
-							Board.playingBoard[position + move] += 2 * movingColour; // Replace opponent man with user Man
+							Board.playingBoard[destination] += 2 * movingColour; // Replace opponent man with user Man
 							//updates bar for opponent
 							Board.playingBoard[24 + ( ( playerDeterminator + 1 ) % 2 )] += ( -1 * movingColour );
 							flag = true;
@@ -103,6 +98,12 @@ public class HumanPlayer
 							System.out.print ( "Enter number to Move\n" );
 							flag = false;// So user has to try again
 						}
+					}
+					else
+					{
+						flag = false;
+						System.out
+								.println ( "You have no men there! Try again!" );
 					}
 				}
 				else if ( position < 0 )

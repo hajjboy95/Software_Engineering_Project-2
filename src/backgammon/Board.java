@@ -29,12 +29,12 @@ public class Board
 	
 	public String showBlackBar()
 	{
-		return "  X" + playingBoard[25] + "  ";
+		return "  X" + Math.abs ( playingBoard[25] ) + "  ";
 	}
 	
 	public String showBlackOff()
 	{
-		return "X" + playingBoard[27] + "\n";
+		return "X" + Math.abs ( playingBoard[27] ) + "\n";
 	}
 	
 	public String showWhiteBar()
@@ -165,7 +165,7 @@ public class Board
 		System.out.println ( tab6 + " 3. 'Q' to quit " );
 		
 		Scanner keyboard = new Scanner ( System.in );
-		String userChoice1 = keyboard.nextLine ();
+		String userChoice1 = keyboard.next ();
 		return userChoice1;
 		
 	}
@@ -272,8 +272,8 @@ public class Board
 		
 		Board b = new Board ();
 		HumanPlayer P = new HumanPlayer ();
-		b.welcome ();
-		String userInput = b.printMenu ();
+		welcome ();
+		String userInput = printMenu ();
 		while ( ! ( userInput.equalsIgnoreCase ( "Q" ) ) )
 		{
 			if ( userInput.equalsIgnoreCase ( "N" ) )
