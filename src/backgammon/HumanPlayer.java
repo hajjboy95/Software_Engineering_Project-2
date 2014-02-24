@@ -54,8 +54,10 @@ public class HumanPlayer
 		bUserMove.useDelimiter ( "\n" );
 		int position, move, destination;
 		boolean flag = false;
-		
-		System.out.println ( "You rolled a " + die1 + " and a " + die2 );
+		if ( die1 == die2 )
+			System.out.println ( "Hooray! You rolled double! move " + die1
+					+ " four times" );
+		else System.out.println ( "You rolled a " + die1 + " and a " + die2 );
 		System.out
 				.print ( "Enter pairs of numbers to Move: example: '1-2 2-3'\tnote:use 25 for bearing on\n" );
 		
@@ -73,6 +75,7 @@ public class HumanPlayer
 			for ( int counter = 0; counter < separateUserMoves.length; counter++ )
 			{
 				String[] pair = separateUserMoves[counter].split ( "-" );			// stores a position-move pair
+				
 				try
 				{
 					position = Integer.parseInt ( pair[0] ) - 1;		// -1 to correct for starting at index 0
@@ -83,6 +86,7 @@ public class HumanPlayer
 					System.out.println ( "Invalid Input! Try again!" );
 					break;
 				}
+				
 				destination = position + ( move * movingColour );
 				if ( position > -1 && position < 26 )
 				{
