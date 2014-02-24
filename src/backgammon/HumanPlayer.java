@@ -57,17 +57,32 @@ public class HumanPlayer
 		
 		System.out.println ( "You rolled a " + die1 + " and a " + die2 );
 		System.out
-				.print ( "Enter pairs of numbers to Move: example: '1-2 2-3'\n" );
+				.print ( "Enter pairs of numbers to Move: example: '1-2 2-3'\tnote:use 25 for bearing on\n" );
 		
 		while ( !flag )
 		{
 			String userInput = bUserMove.next ();					// raw input from the user
+			if ( userInput.equalsIgnoreCase ( "pass" ) )
+			{
+				flag = true;
+				break;
+			}
+			else if ( userInput.equalsIgnoreCase ( "quit" ) )
+				break;		// no else statement needed after this, because the loop will break either way
 			String[] separateUserMoves = userInput.split ( " " );		// stores all the pairs
 			for ( int counter = 0; counter < separateUserMoves.length; counter++ )
 			{
 				String[] pair = separateUserMoves[counter].split ( "-" );			// stores a position-move pair
-				position = Integer.parseInt ( pair[0] ) - 1;
-				move = Integer.parseInt ( pair[1] );
+				try
+				{
+					position = Integer.parseInt ( pair[0] ) - 1;		// -1 to correct for starting at index 0
+					move = Integer.parseInt ( pair[1] );
+				} catch ( NumberFormatException e )
+				{
+					flag = false;
+					System.out.println ( "Invalid Input! Try again!" );
+					break;
+				}
 				destination = position + ( move * movingColour );
 				if ( position > -1 && position < 26 )
 				{
@@ -77,9 +92,9 @@ public class HumanPlayer
 					{
 						if ( ( destination == -1 ) || ( destination == 24 ) )
 						{
-							Board.playingBoard[position] -= movingColour;
+							Board.playingBoard[position] -= movingColour;	// remove man from position
 							Board.playingBoard[Board.WHITE_OFF_IN_ARRAY
-									+ ( playerDeterminator % 2 )] += movingColour;
+									+ ( playerDeterminator % 2 )] += movingColour;	//add man to destination
 							System.out.println ( " Valid move" );
 							flag = true;
 						}
@@ -99,7 +114,7 @@ public class HumanPlayer
 						//If the peg has no opponent men
 						else if ( ( Board.playingBoard[destination] * movingColour ) > -1 )
 						{
-							Board.playingBoard[position] -= movingColour;
+							Board.playingBoard[position] -= movingColour;	// remove man from position
 							Board.playingBoard[destination] += movingColour;// adds a new man to the board
 							System.out.println ( " Valid move" );
 							flag = true;
@@ -112,7 +127,8 @@ public class HumanPlayer
 							System.out.println ( "You killed him" );
 							Board.playingBoard[destination] += 2 * movingColour; // Replace opponent man with user Man
 							//updates bar for opponent
-							Board.playingBoard[24 + ( ( playerDeterminator + 1 ) % 2 )] += ( -1 * movingColour );
+							Board.playingBoard[Board.WHITE_BAR_IN_ARRAY
+									+ ( ( playerDeterminator + 1 ) % 2 )] += ( -1 * movingColour );	//add man to destination
 							flag = true;
 						}
 						
@@ -133,10 +149,7 @@ public class HumanPlayer
 								.println ( "You have no men there! Try again!" );
 					}
 				}
-				if ( position == 25 )
-					bearOn ( movingColour, move );
 			}
-			
 		}
 		return flag;            // loop only exits when flag == true
 		
