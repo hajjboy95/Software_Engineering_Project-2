@@ -83,6 +83,12 @@ public class HumanPlayer
 							System.out.println ( " Valid move" );
 							flag = true;
 						}
+						else if ( position == 25 )
+						{
+							bearOn ( movingColour, move );
+							System.out.println ( " Valid move" );
+							flag = true;
+						}
 						else if ( ( destination < 0 ) || ( destination > 23 ) )
 						{
 							System.out
@@ -128,7 +134,7 @@ public class HumanPlayer
 					}
 				}
 				if ( position == 25 )
-					bearOn ( movingColour, move );               // exit condition
+					bearOn ( movingColour, move );
 			}
 			
 		}
