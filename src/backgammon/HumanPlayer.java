@@ -113,6 +113,7 @@ public class HumanPlayer
 							System.out
 									.println ( " Array out of bounds retry move " );
 							flag = false;
+							break;
 						}
 						
 						//If the peg has no opponent men
@@ -144,6 +145,7 @@ public class HumanPlayer
 									.println ( "Invalid move You are attempting to kill more then 1 man!" );
 							System.out.print ( "Enter number to Move\n" );
 							flag = false;// So user has to try again
+							break;
 						}
 					}
 					else
@@ -151,6 +153,7 @@ public class HumanPlayer
 						flag = false;
 						System.out
 								.println ( "You have no men there! Try again!" );
+						break;
 					}
 				}
 			}
