@@ -16,6 +16,14 @@ public class HumanPlayer
 		return ( int ) Math.pow ( -1, playerDeterminator % 2 );	// this is a safe cast, since the power is always 0 or 1
 	}
 	
+	void bearOn (int moving_player, int destination)
+	{
+		if(moving_player==1)
+		{
+			Board.playingBoard[]
+		}
+	}
+	
 	/**
 	 * self explanatory
 	 * 

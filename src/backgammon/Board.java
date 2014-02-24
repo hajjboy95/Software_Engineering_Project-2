@@ -7,7 +7,10 @@ public class Board
 	static final int NUMBER_OF_PEGS = 24;				// initialising the constants here
 	static final int BAR = 2;
 	static final int OFF = 2;
-	
+	static final int BLACK_BAR_IN_ARRAY = 25;
+	static final int WHITE_BAR_IN_ARRAY = 24;
+	static final int WHITE_OFF_IN_ARRAY = 26;
+	static final int BLACK_OFF_IN_ARRAY = 27;
 	/*---------------------------------------------------------------------*/
 	static final int RED_HOME_START = 18;
 	static final int RED_HOME_END = 24;
@@ -29,22 +32,22 @@ public class Board
 	
 	public String showBlackBar()
 	{
-		return "  X" + Math.abs ( playingBoard[25] ) + "  ";
+		return "  X" + Math.abs ( playingBoard[BLACK_BAR_IN_ARRAY] ) + "  ";
 	}
 	
 	public String showBlackOff()
 	{
-		return "X" + Math.abs ( playingBoard[27] ) + "\n";
+		return "X" + Math.abs ( playingBoard[BLACK_OFF_IN_ARRAY] ) + "\n";
 	}
 	
 	public String showWhiteBar()
 	{
-		return "  O" + playingBoard[24] + "  ";
+		return "  O" + playingBoard[WHITE_BAR_IN_ARRAY] + "  ";
 	}
 	
 	public String showWhiteOff()
 	{
-		return "O" + playingBoard[26] + "\n\n";
+		return "O" + playingBoard[WHITE_OFF_IN_ARRAY] + "\n\n";
 	}
 	
 	/**
@@ -52,7 +55,7 @@ public class Board
 	 */
 	public void initialiseBoard()
 	{
-		for ( int i = 0; i < 24; i++ )
+		for ( int i = 0; i < NUMBER_OF_PEGS; i++ )
 		{
 			
 			switch ( i )
@@ -113,7 +116,8 @@ public class Board
 		// print the top right quarter of the board
 		for ( int counter = TOP_OUTER_START; counter < TOP_OUTER_END; counter++ )
 		{
-			boardPositionCorrection = ( ( counter == 12 ) ? "" : " " );
+			boardPositionCorrection = ( ( counter == TOP_OUTER_START ) ? ""
+					: " " );
 			System.out.print ( boardPositionCorrection
 					+ printMen ( playingBoard[counter] ) );
 		}
@@ -122,7 +126,7 @@ public class Board
 		// print the top left quarter of the board		
 		for ( int counter = RED_HOME_START; counter < RED_HOME_END; counter++ )
 		{
-			boardPositionCorrection = ( ( counter == 18 ) ? "" : " " )
+			boardPositionCorrection = ( ( counter == TOP_OUTER_END ) ? "" : " " )
 					+ ( ( counter == 23 ) ? " " : "" );
 			System.out.print ( boardPositionCorrection
 					+ printMen ( playingBoard[counter] ) );
@@ -141,7 +145,8 @@ public class Board
 		// print the bottom left quarter of the board
 		for ( int counter = WHITE_HOME_START; counter > WHITE_HOME_END; counter-- )
 		{
-			boardPositionCorrection = ( ( counter == 5 ) ? "" : " " )
+			boardPositionCorrection = ( ( counter == WHITE_HOME_START ) ? ""
+					: " " )
 					+ ( ( counter == 0 ) ? " " : "" );
 			System.out.print ( boardPositionCorrection
 					+ printMen ( playingBoard[counter] ) );
