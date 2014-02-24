@@ -16,11 +16,17 @@ public class HumanPlayer
 		return ( int ) Math.pow ( -1, playerDeterminator % 2 );	// this is a safe cast, since the power is always 0 or 1
 	}
 	
-	void bearOn (int moving_player, int destination)
+	void bearOn( int moving_player, int destination )
 	{
-		if(moving_player==1)
+		if ( moving_player == -1 )
 		{
-			Board.playingBoard[]
+			Board.playingBoard[Board.BLACK_BAR_IN_ARRAY] -= moving_player;
+			Board.playingBoard[Board.RED_HOME_START + destination] += moving_player;
+		}
+		if ( moving_player == -1 )
+		{
+			Board.playingBoard[Board.WHITE_BAR_IN_ARRAY] -= moving_player;
+			Board.playingBoard[destination] += moving_player;
 		}
 	}
 	
@@ -46,8 +52,7 @@ public class HumanPlayer
 		int movingColour = getPlayer ();
 		Scanner bUserMove = new Scanner ( System.in );
 		bUserMove.useDelimiter ( "\n" );
-		int position;
-		int move;
+		int position, move, destination;
 		boolean flag = false;
 		
 		System.out.println ( "You rolled a " + die1 + " and a " + die2 );
@@ -63,14 +68,22 @@ public class HumanPlayer
 				String[] pair = separateUserMoves[counter].split ( "-" );			// stores a position-move pair
 				position = Integer.parseInt ( pair[0] ) - 1;
 				move = Integer.parseInt ( pair[1] );
-				int destination = position + ( move * movingColour );
+				destination = position + ( move * movingColour );
 				if ( position > -1 && position < 26 )
 				{
 					//checks if a black man exists in that position
 					// This checks if the user chose a black man to move
 					if ( ( Board.playingBoard[position] * movingColour ) > 0 )
 					{
-						if ( ( destination < 0 ) || ( destination > 23 ) )
+						if ( ( destination == -1 ) || ( destination == 24 ) )
+						{
+							Board.playingBoard[position] -= movingColour;
+							Board.playingBoard[Board.WHITE_OFF_IN_ARRAY
+									+ ( playerDeterminator % 2 )] += movingColour;
+							System.out.println ( " Valid move" );
+							flag = true;
+						}
+						else if ( ( destination < 0 ) || ( destination > 23 ) )
 						{
 							System.out
 									.println ( " Array out of bounds retry move " );
@@ -78,7 +91,7 @@ public class HumanPlayer
 						}
 						
 						//If the peg has no opponent men
-						if ( ( Board.playingBoard[destination] * movingColour ) > -1 )
+						else if ( ( Board.playingBoard[destination] * movingColour ) > -1 )
 						{
 							Board.playingBoard[position] -= movingColour;
 							Board.playingBoard[destination] += movingColour;// adds a new man to the board
@@ -114,8 +127,8 @@ public class HumanPlayer
 								.println ( "You have no men there! Try again!" );
 					}
 				}
-				else if ( position < 0 )
-					return false;               // exit condition
+				if ( position == 25 )
+					bearOn ( movingColour, move );               // exit condition
 			}
 			
 		}
